@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta
+        name="description"
+        content="Daniel is a bilingual educational guide to the Uzbek doira."
+    >
+
+    <title>Daniel — Doira Guide</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .rich-message {
+            display: grid;
+            gap: 10px;
+            max-width: min(100%, 430px);
+        }
+
+        .doira-chat-image {
+            display: block;
+            width: min(100%, 360px);
+            max-height: 380px;
+            object-fit: contain;
+            border-radius: 14px;
+        }
+
+        .rich-message-caption,
+        .quiz-progress {
+            display: block;
+            opacity: 0.72;
+            line-height: 1.4;
+        }
+
+        .chat-action-button,
+        .quiz-option-button,
+        .quiz-next-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            max-width: 100%;
+            padding: 10px 14px;
+            border: 1px solid currentColor;
+            border-radius: 999px;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            line-height: 1.2;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .chat-action-button:hover,
+        .quiz-option-button:hover,
+        .quiz-next-button:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .chat-action-button:focus-visible,
+        .quiz-option-button:focus-visible,
+        .quiz-next-button:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+
+        .quiz-card {
+            width: min(100%, 430px);
+        }
+
+        .quiz-question,
+        .quiz-feedback {
+            margin: 0;
+            line-height: 1.55;
+        }
+
+        .quiz-question {
+            font-weight: 700;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 8px;
+        }
+
+        .quiz-option-button {
+            width: 100%;
+            justify-content: flex-start;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .quiz-option-button.correct {
+            font-weight: 700;
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+        }
+
+        .quiz-option-button.incorrect {
+            text-decoration: line-through;
+            opacity: 0.58;
+        }
+
+        .quiz-option-button:disabled,
+        .quiz-next-button:disabled {
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body class="chat-page">
+    <header class="app-header">
+        <a class="brand" href="index.html" aria-label="Daniel home">
+            <img src="daniel.png" alt="" class="brand-avatar">
+
+            <span>
+                <small>DOIRA CULTURAL GUIDE</small>
+                <strong>Daniel</strong>
+            </span>
+        </a>
+
+        <div class="header-actions">
+            <a class="header-game-link" href="game.html">
+                Play & learn
+            </a>
+
+            <span class="online-label">
+                <span class="online-dot" aria-hidden="true"></span>
+                Online
+            </span>
+
+            <button id="logoutButton" class="text-button" type="button">
+                Sign out
+            </button>
+        </div>
+    </header>
+
+    <main class="chat-shell">
+        <aside class="knowledge-sidebar" aria-label="About Daniel">
+            <section class="guide-card">
+                <div class="guide-portrait">
+                    <img src="daniel.png" alt="Daniel, the virtual guide">
+                    <span class="online-dot" aria-hidden="true"></span>
+                </div>
+
+                <p class="eyebrow">YOUR CULTURAL GUIDE</p>
+                <h1>Discover the doira</h1>
+                <p>
+                    Ask Daniel about the instrument’s history, construction,
+                    sounds, playing techniques, performers, and place in
+                    Central Asian culture.
+                </p>
+
+                <div class="language-note">
+                    <span aria-hidden="true">文</span>
+                    <p>
+                        <strong>Two languages</strong>
+                        Daniel answers in English or Russian.
+                    </p>
+                </div>
+            </section>
+
+            <section class="topics-card">
+                <div class="section-title">
+                    <p class="eyebrow">EXPLORE A TOPIC</p>
+                    <button
+                        id="clearChatButton"
+                        class="clear-button"
+                        type="button"
+                    >
+                        Clear chat
+                    </button>
+                </div>
+
+                <div class="topic-list">
+                    <button type="button" data-question="What is the doira?">
+                        <span>🥁</span>
+                        <span><strong>What it is</strong><small>Family and names</small></span>
+                    </button>
+
+                    <button type="button" data-question="Tell me about the history of the doira">
+                        <span>◷</span>
+                        <span><strong>History</strong><small>Origins and tradition</small></span>
+                    </button>
+
+                    <button type="button" data-question="How is a doira made?">
+                        <span>◇</span>
+                        <span><strong>Construction</strong><small>Frame, skin, and rings</small></span>
+                    </button>
+
+                    <button type="button" data-question="What sounds can the doira make?">
+                        <span>♫</span>
+                        <span><strong>Sounds</strong><small>Bum, bak, and jingles</small></span>
+                    </button>
+
+                    <button type="button" data-question="How do beginners play the doira?">
+                        <span>✋</span>
+                        <span><strong>Playing</strong><small>Technique and practice</small></span>
+                    </button>
+
+                    <button type="button" data-question="Why is the doira important in Uzbek culture?">
+                        <span>✦</span>
+                        <span><strong>Culture</strong><small>Music, dance, and community</small></span>
+                    </button>
+                </div>
+            </section>
+        </aside>
+
+        <section class="conversation-card" aria-label="Chat with Daniel">
+            <header class="conversation-header">
+                <div>
+                    <p class="eyebrow">CONVERSATION</p>
+                    <h2>
+                        Hello, <span id="usernameLabel">friend</span>
+                    </h2>
+                </div>
+
+                <span class="knowledge-badge">Doira knowledge base</span>
+            </header>
+
+            <div
+                id="chatMessages"
+                class="messages"
+                role="log"
+                aria-live="polite"
+                aria-relevant="additions"
+            ></div>
+
+            <div class="suggestion-row" aria-label="Suggested questions">
+                <button type="button" data-question="What is usul in Uzbek music?">
+                    What is usul?
+                </button>
+                <button type="button" data-question="How is a doira different from a tambourine?">
+                    Doira vs tambourine
+                </button>
+                <button type="button" data-question="Who are famous doira performers?">
+                    Famous performers
+                </button>
+                <button type="button" data-question="How should I care for a doira?">
+                    Instrument care
+                </button>
+                <button type="button" data-question="Start the doira quiz">
+                    Doira quiz
+                </button>
+                <button type="button" data-question="I want to play the doira rhythm game">
+                    Rhythm game
+                </button>
+            </div>
+
+            <form id="chatForm" class="composer">
+                <label class="sr-only" for="chatInput">
+                    Ask Daniel about the doira
+                </label>
+
+                <textarea
+                    id="chatInput"
+                    rows="1"
+                    maxlength="500"
+                    placeholder="Ask about the doira in English or Russian…"
+                    autocomplete="off"
+                    required
+                ></textarea>
+
+                <button type="submit" aria-label="Send message">
+                    <span>Send</span>
+                    <span aria-hidden="true">↑</span>
+                </button>
+            </form>
+
+            <p class="composer-hint">
+                Press Enter to send · Shift + Enter for a new line
+            </p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

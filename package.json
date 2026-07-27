@@ -1,0 +1,10 @@
+{
+  "name": "daniel-doira-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bilingual educational chatbot and rhythm game about the traditional Uzbek doira.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check script.js && node --check game.js"
+  }
+}

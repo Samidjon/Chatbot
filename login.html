@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta
+        name="description"
+        content="Sign in to chat with Daniel, an educational guide to the Uzbek doira."
+    >
+
+    <title>Welcome — Daniel Doira Guide</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-page">
+    <main class="login-shell">
+        <section class="login-intro">
+            <p class="eyebrow">A CONVERSATION WITH CULTURE</p>
+            <h1>Meet Daniel,<br>your guide to the <em>doira.</em></h1>
+            <p>
+                Explore the history, sound, craft, and living traditions
+                of Uzbekistan’s frame drum through a focused bilingual chat.
+            </p>
+
+            <div class="instrument-preview" aria-hidden="true">
+                <span class="preview-ring ring-one"></span>
+                <span class="preview-ring ring-two"></span>
+                <img src="doira.png" alt="">
+            </div>
+        </section>
+
+        <section class="login-card">
+            <div class="login-guide">
+                <img src="daniel.png" alt="Daniel, the virtual guide">
+                <span>
+                    <strong>Daniel</strong>
+                    <small><i class="online-dot"></i> Ready to chat</small>
+                </span>
+            </div>
+
+            <h2 id="authTitle">Welcome back</h2>
+            <p id="authSubtitle">Sign in to continue your conversation.</p>
+
+            <div class="auth-tabs" role="tablist" aria-label="Account access">
+                <button
+                    id="showLoginButton"
+                    class="active"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                >
+                    Sign in
+                </button>
+                <button
+                    id="showRegisterButton"
+                    type="button"
+                    role="tab"
+                    aria-selected="false"
+                >
+                    Create account
+                </button>
+            </div>
+
+            <p
+                id="authMessage"
+                class="auth-message hidden"
+                role="status"
+                aria-live="polite"
+            ></p>
+
+            <form id="loginForm" class="auth-form">
+                <label for="loginUsername">Username</label>
+                <input
+                    id="loginUsername"
+                    type="text"
+                    minlength="3"
+                    maxlength="25"
+                    autocomplete="username"
+                    placeholder="Your username"
+                    required
+                >
+
+                <label for="loginPassword">Password</label>
+                <input
+                    id="loginPassword"
+                    type="password"
+                    minlength="6"
+                    maxlength="128"
+                    autocomplete="current-password"
+                    placeholder="Your password"
+                    required
+                >
+
+                <button class="primary-button" type="submit">
+                    Continue to chat <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <form id="registerForm" class="auth-form hidden">
+                <label for="registerUsername">Username</label>
+                <input
+                    id="registerUsername"
+                    type="text"
+                    minlength="3"
+                    maxlength="25"
+                    autocomplete="username"
+                    placeholder="Choose a username"
+                    required
+                >
+
+                <label for="registerPassword">Password</label>
+                <input
+                    id="registerPassword"
+                    type="password"
+                    minlength="6"
+                    maxlength="128"
+                    autocomplete="new-password"
+                    placeholder="At least 6 characters"
+                    required
+                >
+
+                <label for="registerPasswordConfirm">Confirm password</label>
+                <input
+                    id="registerPasswordConfirm"
+                    type="password"
+                    minlength="6"
+                    maxlength="128"
+                    autocomplete="new-password"
+                    placeholder="Repeat your password"
+                    required
+                >
+
+                <button class="primary-button" type="submit">
+                    Create account <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <p class="privacy-note">
+                Your account keeps only your sign-in details and chat history.
+            </p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

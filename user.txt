@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "users": {
+    "test": {
+      "username": "Test",
+      "passwordSalt": "yjoX4fqcmSlWzxBIF21l6A==",
+      "passwordHash": "x2Ocu99gbqKROY/4jcSYEFGh0hMGT9LXSUKo+zJGUAK2G7qwdLXxoceKwqJXPuzaPBqQOYTBpQzprW5Qim9nyQ==",
+      "chatHistory": [
+        {
+          "role": "assistant",
+          "text": "Hello, Test! I’m Daniel. Ask me anything about the Uzbek doira, or choose a topic on the left. You can write in English or Russian.",
+          "timestamp": 1785131027412
+        },
+        {
+          "role": "user",
+          "text": "What is usul in Uzbek music?",
+          "timestamp": 1785131035636
+        },
+        {
+          "role": "assistant",
+          "text": "Good question.",
+          "timestamp": 1785131035992
+        },
+        {
+          "role": "assistant",
+          "text": "Usul is a recurring rhythmic pattern or organising cycle in Central Asian music. On the doira, different low, high, open, muted, and ornamental strokes make that pattern audible.",
+          "timestamp": 1785131036630
+        },
+        {
+          "role": "assistant",
+          "text": "Usul is more than a fast drum beat: it shapes musical time, supports melody and dance, and can signal the character of a piece.",
+          "timestamp": 1785131037165
+        },
+        {
+          "role": "user",
+          "text": "How is a doira different from a tambourine?",
+          "timestamp": 1785131038353
+        },
+        {
+          "role": "assistant",
+          "text": "Yes, there’s an interesting detail here.",
+          "timestamp": 1785131038770
+        },
+        {
+          "role": "assistant",
+          "text": "A doira and a tambourine are both frame drums and may both include jingles.",
+          "timestamp": 1785131039204
+        },
+        {
+          "role": "assistant",
+          "text": "The difference is cultural and technical as well as physical: a doira commonly has many small rings suspended inside a relatively deep frame and belongs to Central Asian repertoires and stroke systems; a Western orchestral tambourine usually has pairs of metal discs set into slots in the shell. Exact instruments vary, so the name and playing tradition matter as much as appearance.",
+          "timestamp": 1785131039926
+        },
+        {
+          "role": "user",
+          "text": "I want to play the doira rhythm game",
+          "timestamp": 1785131042831
+        },
+        {
+          "role": "assistant",
+          "text": "Great idea! I have an interactive doira rhythm game ready for you.",
+          "timestamp": 1785131043253
+        },
+        {
+          "role": "user",
+          "text": "How do beginners play the doira?",
+          "timestamp": 1785131198659
+        },
+        {
+          "role": "assistant",
+          "text": "Good question.",
+          "timestamp": 1785131199044
+        },
+        {
+          "role": "assistant",
+          "text": "The doira is normally held in the hands with the membrane facing outward or slightly angled. Both hands can strike, tap, roll, mute, and help balance or move the frame.",
+          "timestamp": 1785131199661
+        },
+        {
+          "role": "assistant",
+          "text": "Skilled playing comes from relaxed wrists, economical finger motion, clear contrast between tone areas, and precise control of the rings—not simply from hitting harder.",
+          "timestamp": 1785131200279
+        },
+        {
+          "role": "user",
+          "text": "Tell me more",
+          "timestamp": 1785131205770
+        },
+        {
+          "role": "assistant",
+          "text": "Of course — let’s keep going.",
+          "timestamp": 1785131206062
+        },
+        {
+          "role": "assistant",
+          "text": "A safe first exercise: sit comfortably, keep the shoulders and wrists loose, and support the frame without squeezing it. Alternate one gentle low stroke and one clear edge stroke very slowly: bum–bak, bum–bak. Aim for even timing and two distinct sounds.",
+          "timestamp": 1785131206783
+        },
+        {
+          "role": "assistant",
+          "text": "Practise in short sessions; stop if the fingers or wrist hurt, and learn hand position from an experienced teacher when possible.",
+          "timestamp": 1785131207324
+        }
+      ],
+      "gameProgress": {
+        "bestScore": 1200,
+        "completedLevels": 3,
+        "unlockedSkins": [
+          "classic",
+          "ancient"
+        ],
+        "selectedSkin": "classic"
+      },
+      "createdAt": "2026-07-27T05:43:47.179Z",
+      "updatedAt": "2026-07-27T05:46:47.514Z"
+    }
+  }
+}
