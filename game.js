@@ -219,7 +219,7 @@ const GAME_PROGRESS_KEY = "danielDoiraGameProgress";
 
 function getGameProgressKey() {
     const username =
-        localStorage.getItem("danielDoiraCurrentUser") || "guest";
+        localStorage.getItem("danielCurrentUser") || "guest";
 
     return `${GAME_PROGRESS_KEY}:${username.toLowerCase()}`;
 }
@@ -596,7 +596,7 @@ function bindEvents() {
     });
 
     document.getElementById("gameLogoutButton").addEventListener("click", () => {
-        localStorage.removeItem("danielDoiraCurrentUser");
+        localStorage.removeItem("danielCurrentUser");
         window.location.href = "/login.html";
     });
 
@@ -614,7 +614,7 @@ function bindEvents() {
 }
 
 function initGame() {
-    const username = localStorage.getItem("danielDoiraCurrentUser");
+    const username = localStorage.getItem("danielCurrentUser");
 
     if (!username) {
         window.location.href = "/login.html";
