@@ -566,7 +566,7 @@ function serveStatic(request, response, pathname) {
         return;
     }
 
-    if ((fileName === "index.html" || fileName === "game.html") && !session) {
+    if (fileName === "index.html" && !session) {
         redirect(response, "/login.html");
         return;
     }
@@ -593,8 +593,8 @@ function serveStatic(request, response, pathname) {
         "Content-Length": content.length,
         "Cache-Control":
             extension === ".html" ||
-            extension === ".js" ||
-            extension === ".css"
+                extension === ".js" ||
+                extension === ".css"
                 ? "no-store"
                 : "public, max-age=3600"
     });
