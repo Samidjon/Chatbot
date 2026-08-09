@@ -753,7 +753,9 @@ async function apiRequest(path, options = {}) {
     }
 
     if (!response.ok) {
-        const error = new Error(payload.error || "The request could not be completed.");
+        const error = new Error(
+            payload.error || "The request could not be completed."
+        );
         error.status = response.status;
         throw error;
     }
@@ -824,13 +826,38 @@ function initLoginPage() {
         setAuthMessage("");
 
         try {
-            await apiRequest("/api/login", {
-                method: "POST",
-                body: JSON.stringify({
-                    username: document.getElementById("loginUsername").value,
-                    password: document.getElementById("loginPassword").value
-                })
-            });
+            const username = document
+                .getElementById("loginUsername")
+                .value
+                .trim();
+
+            const password = document
+                .getElementById("loginPassword")
+                .value;
+
+            if (!username || !password) {
+                throw new Error("Please enter your username and password.");
+            }
+
+            const users = JSON.parse(
+                localStorage.getItem("danielUsers") || "{}"
+            );
+
+            const user = users[username];
+
+            if (!user) {
+                throw new Error("Account not found. Please create an account first.");
+            }
+
+            if (user.password !== password) {
+                throw new Error("Incorrect password.");
+            }
+
+            localStorage.setItem(
+                "danielCurrentUser",
+                username
+            );
+
             window.location.href = "/index.html";
         } catch (error) {
             setAuthMessage(error.message);
@@ -854,13 +881,46 @@ function initLoginPage() {
         setAuthMessage("");
 
         try {
-            await apiRequest("/api/register", {
-                method: "POST",
-                body: JSON.stringify({
-                    username: document.getElementById("registerUsername").value,
-                    password
-                })
-            });
+            const username = document
+                .getElementById("registerUsername")
+                .value
+                .trim();
+
+            if (!username) {
+                throw new Error("Please enter a username.");
+            }
+
+            if (username.length < 3) {
+                throw new Error("Username must be at least 3 characters.");
+            }
+
+            if (password.length < 6) {
+                throw new Error("Password must be at least 6 characters.");
+            }
+
+            const users = JSON.parse(
+                localStorage.getItem("danielUsers") || "{}"
+            );
+
+            if (users[username]) {
+                throw new Error("This username already exists.");
+            }
+
+            users[username] = {
+                password: password,
+                createdAt: Date.now()
+            };
+
+            localStorage.setItem(
+                "danielUsers",
+                JSON.stringify(users)
+            );
+
+            localStorage.setItem(
+                "danielCurrentUser",
+                username
+            );
+
             window.location.href = "/index.html";
         } catch (error) {
             setAuthMessage(error.message);
@@ -1305,23 +1365,16 @@ function appendMessage(role, text, save = true) {
 let saveTimer = null;
 
 function saveHistory() {
-    window.clearTimeout(saveTimer);
-    saveTimer = window.setTimeout(async () => {
-        try {
-            await apiRequest("/api/history", {
-                method: "PUT",
-                body: JSON.stringify({
-                    chatHistory: state.chatHistory
-                })
-            });
-        } catch (error) {
-            if (error.status === 401) {
-                window.location.href = "/login.html";
-            } else {
-                console.error("Could not save chat history:", error);
-            }
-        }
-    }, 180);
+    const username = localStorage.getItem("danielCurrentUser");
+
+    if (!username) {
+        return;
+    }
+
+    localStorage.setItem(
+        `danielChat_${username}`,
+        JSON.stringify(state.chatHistory)
+    );
 }
 
 function showTypingIndicator() {
@@ -1458,19 +1511,22 @@ async function initChatPage() {
         return;
     }
 
-    try {
-        const session = await apiRequest("/api/session");
-        state.username = session.username;
-        state.chatHistory = normaliseHistory(session.chatHistory);
-    } catch (error) {
-        if (error.status === 401) {
-            window.location.href = "/login.html";
-            return;
-        }
+    const username = localStorage.getItem("danielCurrentUser");
 
-        messages.textContent = "The chat could not be loaded. Please refresh the page.";
+    if (!username) {
+        window.location.href = "/login.html";
         return;
     }
+
+    state.username = username;
+
+    const savedHistory = localStorage.getItem(
+        `danielChat_${username}`
+    );
+
+    state.chatHistory = savedHistory
+        ? normaliseHistory(JSON.parse(savedHistory))
+        : [];
 
     document.getElementById("usernameLabel").textContent = state.username;
 
@@ -1523,15 +1579,9 @@ async function initChatPage() {
         );
     });
 
-    document.getElementById("logoutButton").addEventListener("click", async () => {
-        try {
-            await apiRequest("/api/logout", {
-                method: "POST",
-                body: "{}"
-            });
-        } finally {
-            window.location.href = "/login.html";
-        }
+    document.getElementById("logoutButton").addEventListener("click", () => {
+        localStorage.removeItem("danielCurrentUser");
+        window.location.href = "/login.html";
     });
 
     input.focus();
