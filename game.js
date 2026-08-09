@@ -215,6 +215,51 @@ async function apiRequest(path, options = {}) {
     return payload;
 }
 
+const GAME_PROGRESS_KEY = "danielDoiraGameProgress";
+
+function getGameProgressKey() {
+    const username =
+        localStorage.getItem("danielDoiraCurrentUser") || "guest";
+
+    return `${GAME_PROGRESS_KEY}:${username.toLowerCase()}`;
+}
+
+function createDefaultGameProgress() {
+    return {
+        bestScore: 0,
+        completedLevels: 0,
+        unlockedSkins: ["classic"],
+        selectedSkin: "classic"
+    };
+}
+
+function loadGameProgress() {
+    try {
+        const saved = localStorage.getItem(getGameProgressKey());
+
+        if (!saved) {
+            return createDefaultGameProgress();
+        }
+
+        const progress = JSON.parse(saved);
+
+        return {
+            bestScore: Number(progress.bestScore) || 0,
+            completedLevels: Math.max(
+                0,
+                Math.min(LEVELS.length, Number(progress.completedLevels) || 0)
+            ),
+            unlockedSkins: Array.isArray(progress.unlockedSkins)
+                ? progress.unlockedSkins
+                : ["classic"],
+            selectedSkin: progress.selectedSkin || "classic"
+        };
+    } catch (error) {
+        console.error("Could not load game progress:", error);
+        return createDefaultGameProgress();
+    }
+}
+
 function wait(milliseconds) {
     return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
@@ -414,23 +459,17 @@ async function listenToPattern() {
 
 async function saveProgress() {
     try {
-        const payload = await apiRequest("/api/game-progress", {
-            method: "PUT",
-            body: JSON.stringify(gameState.progress)
-        });
-        gameState.progress = payload.gameProgress;
+        localStorage.setItem(
+            getGameProgressKey(),
+            JSON.stringify(gameState.progress)
+        );
+
         renderCollection();
     } catch (error) {
-        if (error.status === 401) {
-            window.location.href = "/login.html";
-            return;
-        }
-
         console.error("Could not save game progress:", error);
         setFeedback(t("saveError"), "warning");
     }
 }
-
 function unlockSkins() {
     const unlocked = new Set(gameState.progress.unlockedSkins);
     unlocked.add("classic");
@@ -556,15 +595,9 @@ function bindEvents() {
         setFeedback(t("ready"), "ready");
     });
 
-    document.getElementById("gameLogoutButton").addEventListener("click", async () => {
-        try {
-            await apiRequest("/api/logout", {
-                method: "POST",
-                body: "{}"
-            });
-        } finally {
-            window.location.href = "/login.html";
-        }
+    document.getElementById("gameLogoutButton").addEventListener("click", () => {
+        localStorage.removeItem("danielDoiraCurrentUser");
+        window.location.href = "/login.html";
     });
 
     window.addEventListener("keydown", (event) => {
@@ -580,30 +613,41 @@ function bindEvents() {
     });
 }
 
-async function initGame() {
-    try {
-        const [session, progressPayload] = await Promise.all([
-            apiRequest("/api/session"),
-            apiRequest("/api/game-progress")
-        ]);
+function initGame() {
+    const username = localStorage.getItem("danielDoiraCurrentUser");
 
-        gameState.username = session.username;
-        gameState.progress = progressPayload.gameProgress;
-        gameState.levelIndex = gameState.progress.completedLevels >= LEVELS.length
-            ? 0
-            : gameState.progress.completedLevels;
-    } catch (error) {
-        if (error.status === 401) {
-            window.location.href = "/login.html";
-            return;
-        }
-
-        document.querySelector(".game-shell").innerHTML =
-            `<p class="game-load-error">${t("loadError")}</p>`;
+    if (!username) {
+        window.location.href = "/login.html";
         return;
     }
 
-    document.getElementById("gameUsername").textContent = gameState.username;
+    try {
+        gameState.username = username;
+        gameState.progress = loadGameProgress();
+
+        unlockSkins();
+
+        gameState.levelIndex =
+            gameState.progress.completedLevels >= LEVELS.length
+                ? 0
+                : gameState.progress.completedLevels;
+
+        localStorage.setItem(
+            getGameProgressKey(),
+            JSON.stringify(gameState.progress)
+        );
+    } catch (error) {
+        console.error("Could not initialise game:", error);
+
+        document.querySelector(".game-shell").innerHTML =
+            `<p class="game-load-error">${t("loadError")}</p>`;
+
+        return;
+    }
+
+    document.getElementById("gameUsername").textContent =
+        gameState.username;
+
     bindEvents();
     applyTranslations();
     setFeedback(t("ready"), "ready");
